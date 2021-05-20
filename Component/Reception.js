@@ -2,9 +2,8 @@
 import React, { PureComponent } from 'react';
 import { AppRegistry, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import { NativeModules } from 'react-native';
+import CalendarModule from './CalendarModule';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 
 // klhslhs
 class ExampleApp extends PureComponent {
@@ -45,29 +44,10 @@ class ExampleApp extends PureComponent {
 
   takePicture = async () => {
     if (this.camera) {
-      const options = { quality: 0.1, doNotSave:false};
+      const options = { quality: 0.1, doNotSave:true};
       const data = await this.camera.takePictureAsync(options);
       console.log(JSON.stringify(data));
-
-      /*NativeModules.getPixels(data.uri)
-          .then((image) => {
-              console.log(image.width);
-              console.log(image.height);
-              console.log(image.hasAlpha);
-
-
-              for (let x = 0; x < image.width; x++) {
-                  for (let y = 0; y < image.height; y++) {
-                      const offset = image.width * y + x;
-                      const pixel = image.pixels[offset];
-                  }
-              }
-          })
-          .catch((err) => {
-              console.error(err);
-          });*/
-    }
-  };
+  }}
 }
 
 const styles = StyleSheet.create({

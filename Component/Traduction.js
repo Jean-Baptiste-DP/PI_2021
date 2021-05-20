@@ -1,18 +1,29 @@
 import React from 'react'
-import {ActivityIndicator, StyleSheet, View, TextInput, Button, Text, FlatList } from 'react-native'
+import {StyleSheet, View, TextInput, Button, Text, FlatList, TouchableOpacity } from 'react-native'
+import CalendarModule from "./CalendarModule";
 
 class Reception extends React.Component{
+  _debutTrad(){
+    console.log("bouton appuyé")
+    console.log(CalendarModule)
+    CalendarModule.triple().then((value)=>{console.log(value)})
+  }
   render(){
     return (
       <View style={styles.main_container}>
-        <View style={styles.boutton1}>
+        <TouchableOpacity
+          style={styles.boutton1}
+          onPress={() => this._debutTrad()}
+        >
           <View style={styles.boutton2}>
-            <Text style={{color:'#065FA4'}}>RECEPTIONNER LE MESSAGE</Text>
+            <Text style={{color:'#065FA4'}}>TRADUIRE LE MESSAGE</Text>
           </View>
-        </View>
+        </TouchableOpacity>
         <View style={styles.zoneText1}>
-          <View style={{flex:1, marginBottom:20, backgroundColor: "#96BFDE"}}>
-            <Text style={{marginTop:10, color:'grey'}}> Votre message reçu</Text>
+          <View
+            style={{flex:1, marginBottom:20, backgroundColor: "#96BFDE"}}
+          >
+            <Text>Votre message reçu</Text>
           </View>
         </View>
       </View>
