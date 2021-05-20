@@ -1,12 +1,12 @@
 import React from 'react'
 import {StyleSheet, View, TextInput, Button, Text, FlatList, TouchableOpacity } from 'react-native'
-import CalendarModule from "./CalendarModule";
+import ImageAnalyser from "./ImportImageAnalyser";
 
 class Reception extends React.Component{
   _debutTrad(){
     console.log("bouton appuyé")
-    console.log(CalendarModule)
-    CalendarModule.triple().then((value)=>{console.log(value)})
+    console.log(ImageAnalyser)
+    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/65a6bc2a-bad5-4b8a-8df3-3f3f4f03f88a.jpg").then((value)=>{console.log(value)})
   }
   render(){
     return (

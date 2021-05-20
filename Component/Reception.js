@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react';
 import { AppRegistry, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
-import CalendarModule from './CalendarModule';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 // klhslhs

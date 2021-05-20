@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.projet2.CalendarModule;
+import com.projet2.ImageAnalyser;
 
 public class MyAppPackage implements ReactPackage {
 
@@ -22,8 +22,7 @@ public class MyAppPackage implements ReactPackage {
            ReactApplicationContext reactContext) {
        List<NativeModule> modules = new ArrayList<>();
 
-       modules.add(new CalendarModule(reactContext));
-       System.out.println("boucle MyAppPackage Ok");
+       modules.add(new ImageAnalyser(reactContext));
        return modules;
    }
 

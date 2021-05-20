@@ -10,19 +10,19 @@ import java.util.HashMap;
 
 import android.util.Log;
 
-public class CalendarModule extends ReactContextBaseJavaModule {
-   CalendarModule(ReactApplicationContext context) {
+public class ImageAnalyser extends ReactContextBaseJavaModule {
+   ImageAnalyser(ReactApplicationContext context) {
        super(context);
    }
 
    @Override
    public String getName() {
-      return "CalendarModule";
+      return "ImageAnalyser";
    }
 
    @ReactMethod
-   public void triple(final Promise promise) {
-      String tri="test";
+   public void triple(String mot, final Promise promise) {
+      String tri="test : " + mot;
       promise.resolve(tri);
    }
 }
