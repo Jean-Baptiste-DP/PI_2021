@@ -10,6 +10,9 @@ import java.util.HashMap;
 
 import android.util.Log;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 public class ImageAnalyser extends ReactContextBaseJavaModule {
    ImageAnalyser(ReactApplicationContext context) {
        super(context);
@@ -21,8 +24,11 @@ public class ImageAnalyser extends ReactContextBaseJavaModule {
    }
 
    @ReactMethod
-   public void triple(String mot, final Promise promise) {
-      String tri="test : " + mot;
-      promise.resolve(tri);
+   public void triple(String filePath, final Promise promise) {
+      //Bitmap bitmap = BitmapFactory.decodeFile(filePath.substring(7)); //après test, il faut le vrai chemin
+      //promise.resolve(bitmap.getWidth());
+      promise.resolve(filePath.substring(7));
+      //String tri="test : " + mot;
+      //promise.resolve(tri);
    }
 }

@@ -43,7 +43,7 @@ class ExampleApp extends PureComponent {
 
   takePicture = async () => {
     if (this.camera) {
-      const options = { quality: 0.1, doNotSave:true};
+      const options = { quality: 0.1, doNotSave:false};
       const data = await this.camera.takePictureAsync(options);
       console.log(JSON.stringify(data));
   }}

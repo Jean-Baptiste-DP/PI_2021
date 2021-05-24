@@ -2,11 +2,16 @@ import React from 'react'
 import {StyleSheet, View, TextInput, Button, Text, FlatList, TouchableOpacity } from 'react-native'
 import ImageAnalyser from "./ImportImageAnalyser";
 
+var RNGRP = require('react-native-get-real-path');
+
 class Reception extends React.Component{
   _debutTrad(){
-    console.log("bouton appuyé")
-    console.log(ImageAnalyser)
-    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/65a6bc2a-bad5-4b8a-8df3-3f3f4f03f88a.jpg").then((value)=>{console.log(value)})
+
+    /*RNGRP.getRealPathFromURI("file:///data/user/0/com.projet2/cache/Camera/47ecc627-4b58-4981-a3c7-2ca19282c7a2.jpg").then(filePath =>
+      console.log(filePath)
+    )*/
+    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/47ecc627-4b58-4981-a3c7-2ca19282c7a2.jpg").then((value)=>{console.log(value)})
+
   }
   render(){
     return (

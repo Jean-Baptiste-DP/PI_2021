@@ -1,4 +1,5 @@
 package com.projet2; // replace your-app-name with your app’s name
+
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
