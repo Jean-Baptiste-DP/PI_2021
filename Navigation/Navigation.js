@@ -7,6 +7,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import Emission from "../Component/Emission";
 import Reception from "../Component/Reception";
 import Traduction from "../Component/Traduction";
+import AffichageImage from "../Component/AffichageImage";
 
 const Tab=createBottomTabNavigator();
 
@@ -25,7 +26,7 @@ class OptionTabNavigator extends React.Component{
         >
           <Tab.Screen
             name="Emission"
-            component={Emission}
+            component={AffichageImage}
             options={{
               tabBarLabel: 'Émission',
               tabBarIcon: ({ color, size }) => (

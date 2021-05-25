@@ -1,17 +1,24 @@
 import React from 'react'
 import {StyleSheet, View, TextInput, Button, Text, FlatList, TouchableOpacity } from 'react-native'
 import ImageAnalyser from "./ImportImageAnalyser";
+import {connect} from "react-redux";
 
-var RNGRP = require('react-native-get-real-path');
-
-class Reception extends React.Component{
+class Traduction extends React.Component{
+  constructor(props){
+    super(props)
+  }
   _debutTrad(){
-
-    /*RNGRP.getRealPathFromURI("file:///data/user/0/com.projet2/cache/Camera/47ecc627-4b58-4981-a3c7-2ca19282c7a2.jpg").then(filePath =>
-      console.log(filePath)
-    )*/
-    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/47ecc627-4b58-4981-a3c7-2ca19282c7a2.jpg").then((value)=>{console.log(value)})
-
+    //ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/4079d26c-ddbb-46ac-8323-e1c6301e7acb.jpg").then((value)=>{console.log(value)})
+    /*console.log("reference")
+    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/86aadf2c-ede7-449c-857b-57c21802c2ab.jpg").then((value)=>{console.log(value)})
+    console.log("photo éteinte")
+    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/86aadf2c-ede7-449c-857b-57c21802c2ab.jpg").then((value)=>{console.log(value)})
+    console.log("photo allumée")
+    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/7068b9c8-ffea-4c8a-a1fa-fe74e79d0853.jpg").then((value)=>{console.log(value)})
+    console.log("photo éteinte")
+    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/f89e03f3-401d-4871-afc9-ec85121b9934.jpg").then((value)=>{console.log(value)})
+*/
+    console.log(this.props.photos)
   }
   render(){
     return (
@@ -61,4 +68,16 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Reception
+const mapStateToProps = (state) => {
+  return {
+    photos : state.photos
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch: (action) => { dispatch(action) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Traduction)
