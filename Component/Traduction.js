@@ -18,7 +18,7 @@ class Traduction extends React.Component{
     console.log("photo éteinte")
     ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/f89e03f3-401d-4871-afc9-ec85121b9934.jpg").then((value)=>{console.log(value)})
 */
-    console.log(this.props.photos)
+    ImageAnalyser.analyseListe(this.props.photos).then((value) => {console.log(value)})
   }
   render(){
     return (

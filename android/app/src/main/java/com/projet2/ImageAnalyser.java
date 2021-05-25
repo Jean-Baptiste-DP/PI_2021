@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.ReadableArray;
 
 public class ImageAnalyser extends ReactContextBaseJavaModule {
 
@@ -30,7 +31,7 @@ public class ImageAnalyser extends ReactContextBaseJavaModule {
       return "ImageAnalyser";
    }
 
-   public int[][] toBlackAndWhite (Bitmap bitmap){
+   private int[][] toBlackAndWhite (Bitmap bitmap){
       int width = bitmap.getWidth();
       int height = bitmap.getHeight();
       int[][] pixels = new int[width][height];
@@ -45,17 +46,18 @@ public class ImageAnalyser extends ReactContextBaseJavaModule {
       return pixels;
    }
 
-   public void setReference(String fileUri) {
+   private void setReference(String fileUri) {
       Bitmap bitmap = BitmapFactory.decodeFile(fileUri.substring(7));
       reference = toBlackAndWhite(bitmap);
+      if (reference[0][0]==0){
+        reference[0][0]=1;
+      }
    }
 
-   @ReactMethod
-   public void triple(String fileUri, final Promise promise) {
-      //Bitmap bitmap = BitmapFactory.decodeFile(fileUri.substring(7));
+   private int analyseImage(String fileUri) {
       if (reference[0][0]==0){
            setReference(fileUri);
-           promise.resolve("Initialisation");
+           return 0;
       }
       else {
            Bitmap bitmap = BitmapFactory.decodeFile(fileUri.substring(7));
@@ -72,14 +74,23 @@ public class ImageAnalyser extends ReactContextBaseJavaModule {
                 }
            }
            if (somme > nbPixels){
-                promise.resolve("test allumé");
+                return 1;
            }
            else{
-                promise.resolve("test éteint");
+                return 0;
            }
       }
-      //int point = bitmap.getPixel(10, 10);
-      //promise.resolve(Color.red(point));
-      promise.resolve(reference[0][0]);
+   }
+
+   @ReactMethod
+   public void analyseListe(ReadableArray listeUri, final Promise promise){
+        int n = listeUri.size();
+        //int[] texteBinaire= new int[n];
+        WritableNativeArray texteBinaire = new WritableNativeArray();
+        for (int i=0; i<n; i++){
+            //texteBinaire[i]=analyseImage(listeUri.getString(i));
+            texteBinaire.pushInt(analyseImage(listeUri.getString(i)));
+        }
+        promise.resolve(texteBinaire);
    }
 }

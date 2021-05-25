@@ -26,7 +26,7 @@ class OptionTabNavigator extends React.Component{
         >
           <Tab.Screen
             name="Emission"
-            component={AffichageImage}
+            component={Emission}
             options={{
               tabBarLabel: 'Émission',
               tabBarIcon: ({ color, size }) => (
