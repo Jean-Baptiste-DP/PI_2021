@@ -3,22 +3,53 @@ import {StyleSheet, View, TextInput, Button, Text, FlatList, TouchableOpacity } 
 import ImageAnalyser from "./ImportImageAnalyser";
 import {connect} from "react-redux";
 
+var RNFS = require('react-native-fs');
+
 class Traduction extends React.Component{
   constructor(props){
     super(props)
+    /*this.imageEteinte="file:///data/user/0/com.projet2/cache/Camera/4e53cc67-abad-4747-befd-cf83d51e8c4c.jpg"
+    this.imageAllumee="file:///data/user/0/com.projet2/cache/Camera/42ff6966-c18a-426b-a9bd-9dd21465a082.jpg"
+    this.liste = [this.imageEteinte,this.imageEteinte,this.imageEteinte,this.imageAllumee,this.imageAllumee,this.imageEteinte,
+      this.imageAllumee,this.imageAllumee,this.imageAllumee,this.imageAllumee,this.imageAllumee,this.imageEteinte,this.imageEteinte,
+      this.imageAllumee,this.imageAllumee,this.imageAllumee,this.imageEteinte,this.imageEteinte,this.imageEteinte,this.imageEteinte,
+      this.imageEteinte,this.imageEteinte,this.imageEteinte,this.imageAllumee,this.imageEteinte,this.imageAllumee,
+      this.imageAllumee,this.imageAllumee,this.imageEteinte,this.imageAllumee,this.imageEteinte,this.imageEteinte,this.imageEteinte,
+      this.imageEteinte,this.imageEteinte,this.imageEteinte,this.imageEteinte,this.imageEteinte,this.imageEteinte,this.imageEteinte,
+      this.imageAllumee,this.imageEteinte,this.imageEteinte,this.imageAllumee,this.imageAllumee,this.imageAllumee,this.imageAllumee,
+      this.imageEteinte,this.imageAllumee,this.imageAllumee,this.imageEteinte,this.imageEteinte]*/
+    this.state = { messageRecu : ""}
+
   }
   _debutTrad(){
-    //ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/4079d26c-ddbb-46ac-8323-e1c6301e7acb.jpg").then((value)=>{console.log(value)})
-    /*console.log("reference")
-    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/86aadf2c-ede7-449c-857b-57c21802c2ab.jpg").then((value)=>{console.log(value)})
-    console.log("photo éteinte")
-    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/86aadf2c-ede7-449c-857b-57c21802c2ab.jpg").then((value)=>{console.log(value)})
-    console.log("photo allumée")
-    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/7068b9c8-ffea-4c8a-a1fa-fe74e79d0853.jpg").then((value)=>{console.log(value)})
-    console.log("photo éteinte")
-    ImageAnalyser.triple("file:///data/user/0/com.projet2/cache/Camera/f89e03f3-401d-4871-afc9-ec85121b9934.jpg").then((value)=>{console.log(value)})
-*/
-    ImageAnalyser.analyseListe(this.props.photos).then((value) => {console.log(value)})
+
+    //ImageAnalyser.analyseListe(this.props.photos).then((value) => {console.log(value)})
+    //ImageAnalyser.test().then((value)=> {console.log(value)})
+    ImageAnalyser.analyseListe(this.props.photos).then((value) => {
+      this.setState({messageRecu : value});
+      const action = {type:'RESET'}
+      this.props.dispatch(action)
+      RNFS.readDir("/data/user/0/com.projet2/cache/Camera")
+      .then((result) => {
+        result.forEach((item) => {
+          return RNFS.unlink(item.path)
+            .catch((err) => {
+              console.log(err.message);
+            });
+        })
+      })
+    })
+    console.log(this.state.messageRecu)
+
+  }
+
+  _afficherTexte(){
+    if (this.state.messageRecu==""){
+      return "Votre message reçu"
+    }
+    else {
+      return this.state.messageRecu
+    }
   }
   render(){
     return (
@@ -35,7 +66,7 @@ class Traduction extends React.Component{
           <View
             style={{flex:1, marginBottom:20, backgroundColor: "#96BFDE"}}
           >
-            <Text>Votre message reçu</Text>
+            <Text>{this._afficherTexte()}</Text>
           </View>
         </View>
       </View>

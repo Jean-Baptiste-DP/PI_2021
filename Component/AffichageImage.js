@@ -7,7 +7,7 @@ class Photo extends React.Component {
     return (
       <View style={{flex:1}}>
         <Image
-          source={{uri:"file:///data/user/0/com.projet2/cache/Camera/753de8ba-e5ae-483e-b47b-82be59a7bd60.jpg"}}
+          source={{uri:"file:///data/user/0/com.projet2/cache/Camera/42ff6966-c18a-426b-a9bd-9dd21465a082.jpg"}}
           style={{height:216, width:288 }}/>
       </View>
     )

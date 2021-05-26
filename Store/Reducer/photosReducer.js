@@ -11,6 +11,9 @@ function togglePhoto (state = initialState, action){
         photos:[...state.photos, action.value]
       }
       return nextState || state
+    case 'RESET':
+      nextState=initialState
+      return nextState || state
     default:
       return state
   }
