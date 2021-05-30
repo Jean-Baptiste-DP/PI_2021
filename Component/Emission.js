@@ -1,6 +1,7 @@
 import React from 'react'
 import {ActivityIndicator, StyleSheet, View, TextInput, Button, Text, FlatList, TouchableOpacity} from 'react-native'
 import Torch from "react-native-torch";
+import {connect} from "react-redux";
 
 class Emission extends React.Component{
   constructor(props) {
@@ -8,7 +9,7 @@ class Emission extends React.Component{
     this.message=""
     this.morse=[]
     this.etat=false;
-    this.emettre=false;
+    //this.emettre=false;
     this.indice=0;
   }
   _textInputChanged(text){
@@ -91,9 +92,11 @@ class Emission extends React.Component{
   }
 
   tick() {
-    if (this.emettre){
+    if (this.props.emettre){
       if (this.indice===this.morse.length){
-        this.emettre=false
+        //this.emettre=false
+        const action = {type:'APPUI_EMETTRE'}
+        this.props.dispatch(action)
         this.etat=false
       }
       else {
@@ -112,17 +115,25 @@ class Emission extends React.Component{
 
   componentDidMount() {
     this.interval = setInterval(() => this.tick(), 1800);
+    this._unsubscribe = this.props.navigation.addListener('tabPress', e => {
+      if (this.props.receptionner){e.preventDefault();}
+    });
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+    this._unsubscribe();
   }
 
   _debutEmission(){
-    if (!this.emettre){
-      this.emettre=true;
+    console.log(this.props)
+    if (!this.props.emettre){
+      //this.emettre=true;
+      const action = {type:'APPUI_EMETTRE'}
+      this.props.dispatch(action)
       this.indice=0;
       this._textToBinaire()
+      console.log(this.props.emettre)
     }
   }
 
@@ -133,19 +144,13 @@ class Emission extends React.Component{
           style={styles.boutton1}
           onPress={() => this._debutEmission()}
         >
-          <View style={styles.boutton2}>
-            <Text style={{color:'#065FA4'}}>TRANSMETTRE LE MESSAGE</Text>
-          </View>
+          <Text style={{color:'#065FA4'}}>TRANSMETTRE LE MESSAGE</Text>
         </TouchableOpacity>
         <View style={styles.zoneText1}>
-          <View
-            style={{flex:1, marginBottom:20, backgroundColor: "#96BFDE"}}
-          >
-            <TextInput
-              placeholder="Message à transmettre"
-              onChangeText={(text)=> this._textInputChanged(text)}
-            />
-          </View>
+          <TextInput
+            placeholder="Message à transmettre"
+            onChangeText={(text)=> this._textInputChanged(text)}
+          />
         </View>
       </View>
     )
@@ -159,9 +164,12 @@ const styles = StyleSheet.create({
     backgroundColor:"#64A0CF"
   },
   boutton1:{
-    flex: 1,
     marginRight : 15,
     marginLeft : 15,
+    marginTop : 15,
+    height: 40,
+    backgroundColor: '#FFAD3F',
+    alignItems:'center',
     justifyContent:"center"
   },
   boutton2:{
@@ -171,10 +179,23 @@ const styles = StyleSheet.create({
     justifyContent:"center"
   },
   zoneText1:{
-    flex:10,
-    marginRight : 15,
-    marginLeft : 15
+    flex:1,
+    margin : 15,
+    backgroundColor: "#96BFDE"
   }
 })
 
-export default Emission
+const mapStateToProps = (state) => {
+  return {
+    emettre : state.emettre,
+    receptionner : state.receptionner
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatch: (action) => { dispatch(action) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Emission)

@@ -26,6 +26,8 @@ target 'Projet2' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
+  pod 'react-native-pager-view', :path => '../node_modules/react-native-pager-view'
+
   target 'Projet2Tests' do
     inherit! :complete
     # Pods for testing

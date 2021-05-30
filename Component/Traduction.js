@@ -2,6 +2,7 @@ import React from 'react'
 import {StyleSheet, View, TextInput, Button, Text, FlatList, TouchableOpacity } from 'react-native'
 import ImageAnalyser from "./ImportImageAnalyser";
 import {connect} from "react-redux";
+import { store } from 'react-notifications-component';
 
 var RNFS = require('react-native-fs');
 
@@ -51,9 +52,22 @@ class Traduction extends React.Component{
       return this.state.messageRecu
     }
   }
+
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('tabPress', e => {
+      if (this.props.emettre || this.props.receptionner){
+        e.preventDefault();
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
   render(){
     return (
-      <View style={styles.main_container}>
+      /*<View style={styles.main_container}>
         <TouchableOpacity
           style={styles.boutton1}
           onPress={() => this._debutTrad()}
@@ -69,6 +83,17 @@ class Traduction extends React.Component{
             <Text>{this._afficherTexte()}</Text>
           </View>
         </View>
+      </View>*/
+      <View style={styles.main_container}>
+        <TouchableOpacity
+          style={styles.boutton1}
+          onPress={() => this._debutTrad()}
+        >
+          <Text style={{color:'#065FA4'}}>TRADUIRE LE MESSAGE</Text>
+        </TouchableOpacity>
+        <View style={styles.zoneText1}>
+          <Text>{this._afficherTexte()}</Text>
+        </View>
       </View>
     )
   }
@@ -81,9 +106,12 @@ const styles = StyleSheet.create({
     backgroundColor:"#64A0CF"
   },
   boutton1:{
-    flex: 1,
     marginRight : 15,
     marginLeft : 15,
+    marginTop : 15,
+    height: 40,
+    backgroundColor: '#FFAD3F',
+    alignItems:'center',
     justifyContent:"center"
   },
   boutton2:{
@@ -93,15 +121,17 @@ const styles = StyleSheet.create({
     justifyContent:"center"
   },
   zoneText1:{
-    flex:10,
-    marginRight : 15,
-    marginLeft : 15
+    flex:1,
+    margin : 15,
+    backgroundColor: "#96BFDE"
   }
 })
 
 const mapStateToProps = (state) => {
   return {
-    photos : state.photos
+    photos : state.photos,
+    receptionner : state.receptionner,
+    emettre : state.emettre
   }
 }
 

@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 class Reception extends React.Component {
   constructor(props){
     super(props)
-    this.prendrePhoto=false;
+    //this.state= {prendrePhoto:false};
   }
   _addPhoto(uri){
     const action={type:'ADD_PHOTO', value:uri}
@@ -43,24 +43,26 @@ class Reception extends React.Component {
         />
         <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
           <TouchableOpacity onPress={() => this._boutonAppuie()} style={styles.capture}>
-            <Icon name="play-circle-o" size={50} color="red" />
+            <Icon name={this._bouton()} size={50} color="red" />
           </TouchableOpacity>
         </View>
       </View>
     );
   }
-  _boutonAppuie(){
-    if (this.prendrePhoto){
-      this.prendrePhoto=false
-      console.log('fin reception')
+  _bouton(){
+    if (this.props.receptionner){
+      return "stop-circle-o"
     }
-    else {
-      this.prendrePhoto=true
-      console.log('début reception')
+    else{
+      return "play-circle-o"
     }
   }
+  _boutonAppuie(){
+    const action={type:'APPUI_RECEPTION'}
+    this.props.dispatch(action)
+  }
   tick(){
-    if(this.prendrePhoto){
+    if(this.props.receptionner){
       console.log("essai Photo")
       this.takePicture()
     }
@@ -75,10 +77,14 @@ class Reception extends React.Component {
 
   componentDidMount() {
     this.interval = setInterval(() => this.tick(), 1800);
+    this._unsubscribe = this.props.navigation.addListener('tabPress', e => {
+      if (this.props.emettre){e.preventDefault();}
+    });
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
+    this._unsubscribe();
   }
 }
 
@@ -105,7 +111,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    photos : state.photos
+    photos : state.photos,
+    receptionner : state.receptionner,
+    emettre : state.emettre
   }
 }
 
