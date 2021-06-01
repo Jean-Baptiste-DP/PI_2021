@@ -6,14 +6,18 @@ import {connect} from "react-redux";
 class Emission extends React.Component{
   constructor(props) {
     super(props);
-    this.message=""
+    this.state={
+      message:"",
+      indice:0
+    }
     this.morse=[]
     this.etat=false;
     //this.emettre=false;
-    this.indice=0;
+    this.tempo= 800;
+    this.message_transmis="";
   }
   _textInputChanged(text){
-    this.message=text
+    this.setState({message:text})
   }
   _lettreToBinaire(lettre){
     switch(lettre){
@@ -86,27 +90,28 @@ class Emission extends React.Component{
 
   _textToBinaire(){
     this.morse=[1]
-    for(let lettre of this.message){
+    for(let lettre of this.state.message){
       this.morse.push(...this._lettreToBinaire(lettre))
     }
   }
 
   tick() {
     if (this.props.emettre){
-      if (this.indice===this.morse.length){
+      if (this.state.indice===this.morse.length){
         //this.emettre=false
         const action = {type:'APPUI_EMETTRE'}
         this.props.dispatch(action)
         this.etat=false
+        this.setState({indice:0})
       }
       else {
-        if (this.morse[this.indice]===1){
+        if (this.morse[this.state.indice]===1){
           this.etat=true
         }
         else{
           this.etat=false
         }
-        this.indice=this.indice+1
+        this.setState({indice:this.state.indice+1})
       }
       Torch.switchState(this.etat)
 
@@ -114,7 +119,7 @@ class Emission extends React.Component{
     }}
 
   componentDidMount() {
-    this.interval = setInterval(() => this.tick(), 1800);
+    this.interval = setInterval(() => this.tick(), this.tempo);
     this._unsubscribe = this.props.navigation.addListener('tabPress', e => {
       if (this.props.receptionner){e.preventDefault();}
     });
@@ -126,14 +131,60 @@ class Emission extends React.Component{
   }
 
   _debutEmission(){
-    console.log(this.props)
     if (!this.props.emettre){
+      this.message_transmis=this.state.message
+      console.log(this._tempsEmission())
+      this.setState({indice:0});
       //this.emettre=true;
       const action = {type:'APPUI_EMETTRE'}
       this.props.dispatch(action)
-      this.indice=0;
       this._textToBinaire()
-      console.log(this.props.emettre)
+    }
+  }
+
+  _tempsEmission(){
+    const n = this.state.message.length;
+    const temps_mil= n*this.tempo*6;
+    const secondes_mil= temps_mil % 60000;
+    const minutes= (temps_mil-secondes_mil) / 60000
+    const sec=secondes_mil / 1000;
+    if (minutes==0){
+      const message= sec.toString() + " secondes"
+      return message
+    }
+    else{
+    const message= minutes.toString() + " minutes et "+ sec.toString() + " secondes"
+      return message
+    }
+
+  }
+
+  _iemeLettre(){
+    const nb_bit_emit = this.state.indice % 6
+    const lettre = (this.state.indice - nb_bit_emit) /6
+    return lettre
+  }
+
+  _texteAffiche(){
+    const n= this.message_transmis.length
+    const lettre = this._iemeLettre()
+    const avant=this.message_transmis.slice(0,lettre)
+    const milieu=this.message_transmis[lettre]
+    const apres=this.message_transmis.slice(lettre+1)
+    return <View style={{flexDirection:'row'}}>
+      <Text>{avant}</Text>
+      <Text style={{color:'red'}}>{milieu}</Text>
+      <Text>{apres}</Text>
+    </View>
+
+  }
+
+  _switchText(){
+    if (this.props.emettre){
+      return this._texteAffiche()
+    }
+    else{
+      return <Text> Temps d'émission : {this._tempsEmission()}</Text>
     }
   }
 
@@ -151,6 +202,9 @@ class Emission extends React.Component{
             placeholder="Message à transmettre"
             onChangeText={(text)=> this._textInputChanged(text)}
           />
+        </View>
+        <View style={styles.info}>
+          {this._switchText()}
         </View>
       </View>
     )
@@ -181,6 +235,13 @@ const styles = StyleSheet.create({
   zoneText1:{
     flex:1,
     margin : 15,
+    backgroundColor: "#96BFDE"
+  },
+  info:{
+    height:80,
+    marginBottom : 15,
+    marginRight: 15,
+    marginLeft: 15,
     backgroundColor: "#96BFDE"
   }
 })

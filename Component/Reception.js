@@ -37,9 +37,9 @@ class Reception extends React.Component {
             buttonPositive: 'Ok',
             buttonNegative: 'Cancel',
           }}
-          onGoogleVisionBarcodesDetected={({ barcodes }) => {
-            //console.log(barcodes);
-          }}
+          autoFocus={RNCamera.Constants.AutoFocus.off}
+          exposure={0}
+          pictureSize={"320x240"}
         />
         <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
           <TouchableOpacity onPress={() => this._boutonAppuie()} style={styles.capture}>
@@ -69,14 +69,14 @@ class Reception extends React.Component {
   }
   takePicture = async () => {
     if (this.camera) {
-      const options = { quality: 0.1, doNotSave:false, width:288};
+      const options = { quality: 0, doNotSave:false, width:320,skipProcessing: true};
       const data = await this.camera.takePictureAsync(options);
       console.log(JSON.stringify(data));
       this._addPhoto(data.uri);
   }}
 
   componentDidMount() {
-    this.interval = setInterval(() => this.tick(), 1800);
+    this.interval = setInterval(() => this.tick(), 800);
     this._unsubscribe = this.props.navigation.addListener('tabPress', e => {
       if (this.props.emettre){e.preventDefault();}
     });

@@ -18,7 +18,7 @@ import com.facebook.react.bridge.ReadableArray;
 
 public class ImageAnalyser extends ReactContextBaseJavaModule {
 
-   private int[][] reference = new int[288][216];
+   private int[][] reference = new int[320][240];
    private int seuilPixel = 100;
    private int nbPixels = 200;
 

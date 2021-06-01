@@ -2,7 +2,7 @@ import React from 'react'
 import {StyleSheet, View, TextInput, Button, Text, FlatList, TouchableOpacity } from 'react-native'
 import ImageAnalyser from "./ImportImageAnalyser";
 import {connect} from "react-redux";
-import { store } from 'react-notifications-component';
+
 
 var RNFS = require('react-native-fs');
 
@@ -40,7 +40,6 @@ class Traduction extends React.Component{
         })
       })
     })
-    console.log(this.state.messageRecu)
 
   }
 
@@ -56,6 +55,7 @@ class Traduction extends React.Component{
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('tabPress', e => {
       if (this.props.emettre || this.props.receptionner){
+
         e.preventDefault();
       }
     });
@@ -95,6 +95,7 @@ class Traduction extends React.Component{
           <Text>{this._afficherTexte()}</Text>
         </View>
       </View>
+
     )
   }
 
